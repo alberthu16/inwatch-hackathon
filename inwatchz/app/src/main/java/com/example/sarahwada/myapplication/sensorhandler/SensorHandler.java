@@ -3,6 +3,7 @@ package com.example.sarahwada.myapplication.sensorhandler;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.sarahwada.myapplication.models.MotionsContainer.UserAction;
@@ -17,7 +18,6 @@ public class SensorHandler {
     SensorManager sensorManager;
 
     // Event listeners for each different action
-    ActionEventListener shuffleEventListener;//TODO: example, delete instances of this
     ActionEventListener pullEventListener;
     ActionEventListener pushEventListener;
     ActionEventListener punchEventListener;
@@ -35,7 +35,6 @@ public class SensorHandler {
         this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
         // Create all event listeners
-        this.shuffleEventListener = new ShuffleEventListener(sensorManager, context);
         this.pullEventListener = new PullEventListener(sensorManager, context);
         this.pushEventListener = new PushEventListener(sensorManager, context);
         this.punchEventListener = new PunchEventListener(sensorManager, context);
@@ -47,27 +46,38 @@ public class SensorHandler {
         this.actionListeners.put(UserAction.TWIST, twistEventListener);
 
         Log.i("SensorHandler", "Initialized all event listeners, sensors, and structures");
-        //Log.i("SensorManager", sensorManager.getSensorList(Sensor.TYPE_ALL).toString());
-        //Toast.makeText(context, "Testing begins!", Toast.LENGTH_SHORT).show();
 
         // TODO: here for now to get something running
         Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-//        sensorManager.registerListener(shuffleEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(pullEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(pushEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(punchEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorManager.registerListener(pullEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorManager.registerListener(pushEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorManager.registerListener(punchEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        twistEventListener.startListener(1000); //10ms
-        //sensorManager.unregisterListener();
+        handle(UserAction.TWIST, 10000);//10 seconds timeout
+
     }
 
-    public boolean handle(UserAction action, double timeout) {
+    /**
+     *
+     * @param action
+     * @param timeout In milliseconds
+     * @return
+     */
+    public boolean handle(UserAction action, long timeout) {
         //TODO: need some way to get the timeout into the EventListener.  See note at line40
 
         // Get event listener associated with this command
-        ActionEventListener listener = actionListeners.get(action);
-        listener.startListener(timeout);
-        listener.stopListener();
+        final ActionEventListener listener = actionListeners.get(action);
+        listener.startListener();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listener.stopListener();
+            }
+        }, timeout);
+
         return listener.success;
     }
 

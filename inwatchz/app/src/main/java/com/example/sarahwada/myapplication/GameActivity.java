@@ -24,7 +24,7 @@ public class GameActivity extends Activity {
         mSensorHandler = new SensorHandler(this);
         mMotions = new MotionsContainer();
 
-        handleCountdownTimer();
+        //handleCountdownTimer();
     }
 
     private void handleCountdownTimer() {
@@ -53,7 +53,7 @@ public class GameActivity extends Activity {
             updateView(currentAction);
             isMotionCorrect =
                     mSensorHandler.handle(currentAction.getUserAction(),
-                            durationRatio * currentAction.getDuration());
+                            (long) durationRatio * currentAction.getDuration());
             if (durationRatio > 0.5)
                 durationRatio -= 0.01;
         }

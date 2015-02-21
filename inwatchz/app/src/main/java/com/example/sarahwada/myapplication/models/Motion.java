@@ -7,12 +7,13 @@ public class Motion {
     private String mCommand;
     private int mSound;
     private MotionsContainer.UserAction mUserAction;
-    private double mDuration;
+    // duration ms
+    private long mDuration;
 
     public Motion(String command,
                   int sound,
                   MotionsContainer.UserAction userAction,
-                  double duration) {
+                  long duration) {
         mCommand= command;
         mSound = sound;
         mUserAction = userAction;
@@ -43,11 +44,11 @@ public class Motion {
         return mUserAction;
     }
 
-    public void setDuration(double duration) {
+    public void setDuration(long duration) {
         mDuration = duration;
     }
 
-    public double getDuration() {
+    public long getDuration() {
         return mDuration;
     }
 }

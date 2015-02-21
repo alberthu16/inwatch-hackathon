@@ -14,8 +14,6 @@ import com.example.sarahwada.myapplication.sensorhandler.SensorHandler;
 
 public class GameActivity extends Activity {
     private SensorHandler mSensorHandler;
-    // TODO: create MotionsContainer Class
-    //      Will also need a Command class
     private MotionsContainer mMotions;
 
     @Override
@@ -27,21 +25,21 @@ public class GameActivity extends Activity {
         mMotions = new MotionsContainer();
 
         handleCountdownTimer();
-        handleGameState();
     }
 
     private void handleCountdownTimer() {
-        CountDownTimer startTimer = new CountDownTimer(3000, 1000) {
+        CountDownTimer startTimer = new CountDownTimer(3000, 500) {
             TextView mDetails = (TextView) findViewById(R.id.details);
 
             @Override
             public void onTick(long millisUntilFinished) {
-                mDetails.setText("" + millisUntilFinished / 1000);
+                mDetails.setText("" + (millisUntilFinished / 1000 + 1));
             }
 
             @Override
             public void onFinish() {
                 mDetails.setText("");
+                handleGameState();
             }
         }.start();
     }

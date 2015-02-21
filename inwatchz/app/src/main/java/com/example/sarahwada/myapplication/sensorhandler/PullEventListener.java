@@ -26,7 +26,7 @@ public class PullEventListener extends ActionEventListener {
     boolean firstUpdate = true;
 
     /* Pull Threshold */
-    final float pullThreshold = 5.5f;
+    final float pullThreshold = 5.0f;
     float magnitude;
 
     /* Has a motion started */
@@ -79,9 +79,9 @@ public class PullEventListener extends ActionEventListener {
     private boolean isPullOrPushed() {
         float deltaY = Math.abs(yPrev - yAccel);
         float deltaX = Math.abs(xPrev - xAccel);
-        float xWeight = 0.35f;
+        float xWeight = 0.2f;
 
-        magnitude = (xWeight * deltaX + deltaY);
+        magnitude = (xWeight * deltaX + 1.3f * deltaY);
 
         return (magnitude > pullThreshold);
     }

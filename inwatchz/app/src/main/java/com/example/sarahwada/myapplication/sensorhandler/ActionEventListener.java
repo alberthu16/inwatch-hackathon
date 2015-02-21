@@ -13,15 +13,15 @@ public abstract class ActionEventListener implements SensorEventListener {
     public SensorManager sensorManager;
     // TODO: one for now, can be a list later on
     public Sensor sensor;
+    public boolean success;
 
     public ActionEventListener(SensorManager sensorManager, Context context) {
         this.context = context;
         this.sensorManager = sensorManager;
     }
 
-    public boolean startListener(int duration) {
-        sensorManager.registerListener(this, this.sensor, SensorManager.SENSOR_DELAY_NORMAL);
-        return true;
+    public void startListener(int duration) {
+        success = sensorManager.registerListener(this, this.sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void stopListener() {

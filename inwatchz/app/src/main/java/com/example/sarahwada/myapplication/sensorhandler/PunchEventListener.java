@@ -26,7 +26,7 @@ public class PunchEventListener extends ActionEventListener {
     boolean firstUpdate = true;
 
     /* Pull Threshold */
-    final float punchThreshold = 5.5f;
+    final float punchThreshold = 5.0f;
     float magnitude;
 
     /* Has a motion started */
@@ -78,9 +78,9 @@ public class PunchEventListener extends ActionEventListener {
     private boolean isPunched() {
         float deltaY = Math.abs(yPrev - yAccel);
         float deltaX = Math.abs(xPrev - xAccel);
-        float yWeight = 0.2f;
+        float yWeight = 0.1f;
 
-        magnitude = (yWeight * deltaY + deltaX);
+        magnitude = (yWeight * deltaY + 1.3f * deltaX);
 
         return (magnitude > punchThreshold);
     }

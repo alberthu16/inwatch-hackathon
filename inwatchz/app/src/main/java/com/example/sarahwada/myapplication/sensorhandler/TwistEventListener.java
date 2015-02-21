@@ -4,8 +4,11 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.sarahwada.myapplication.R;
 
 /**
  *
@@ -51,6 +54,10 @@ public class TwistEventListener extends ActionEventListener {
             Log.i("Ending position", String.format("Pitch: %f, Roll: %f", pitch, roll));
             this.success = true;
             Toast.makeText(context, "TWIST! ", Toast.LENGTH_SHORT).show();
+
+            //TODO: play media sound
+            //MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.boom);
+            //mediaPlayer.start();
         }
     }
 

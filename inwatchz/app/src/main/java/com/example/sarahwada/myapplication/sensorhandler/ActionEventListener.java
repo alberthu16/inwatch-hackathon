@@ -13,7 +13,6 @@ public abstract class ActionEventListener implements SensorEventListener {
     public Context context;
     public SensorManager sensorManager;
     public boolean success = false;
-    // TODO: one for now, can be a list later on
     public Sensor sensor;
 
     public ActionEventListener(SensorManager sensorManager, Context context) {

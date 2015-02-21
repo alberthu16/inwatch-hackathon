@@ -13,7 +13,6 @@ import java.util.Hashtable;
 /**
  * SensorHandler is responsible for handling listeners and sensors based on the user action.
  */
-// extends listener
 public class SensorHandler {
     // Handles listener register and unregister
     SensorManager sensorManager;

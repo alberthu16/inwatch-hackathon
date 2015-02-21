@@ -10,25 +10,11 @@ import android.widget.Toast;
  *
  */
 public class PullEventListener extends ActionEventListener {
-    private Context context;
-    private SensorManager sensorManager;
-    // TODO: one for now, can be a list later on
-    private Sensor sensor;
 
     public PullEventListener(SensorManager sensorManager, Context context) {
-        this.context = context;
-        this.sensorManager = sensorManager;
+        super(sensorManager, context);
         this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-    }
-
-    public boolean startListener(int duration) {
-        //sensorManager.registerListener()
-        return true;
-    }
-
-    public void stopListener() {
-        //sensorManager.unregisterListener()
     }
 
     @Override

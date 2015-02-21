@@ -10,20 +10,10 @@ import android.widget.Toast;
  *
  */
 public class TwistEventListener extends ActionEventListener {
-    private Context context;
-    private SensorManager sensorManager;
 
     public TwistEventListener(SensorManager sensorManager, Context context) {
-        this.context = context;
-        this.sensorManager = sensorManager;    }
-
-    public boolean startListener(int duration) {
-        //sensorManager.registerListener()
-        return true;
-    }
-
-    public void stopListener() {
-        //sensorManager.unregisterListener()
+        super(sensorManager, context);
+        this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     @Override

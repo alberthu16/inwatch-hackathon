@@ -4,11 +4,12 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.sarahwada.myapplication.MainActivity.UserAction;
+import com.example.sarahwada.myapplication.models.MotionsContainer.UserAction;
 
 import java.util.Hashtable;
+
+;
 
 /**
  * SensorHandler is responsible for handling listeners and sensors based on the user action.
@@ -55,7 +56,7 @@ public class SensorHandler {
         //sensorManager.unregisterListener();
     }
 
-    public boolean handle(UserAction action, int timeout) {
+    public boolean handle(UserAction action, double timeout) {
         //TODO: need some way to get the timeout into the EventListener.  See note at line40
 
         // Get event listener associated with this command

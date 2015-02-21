@@ -19,7 +19,7 @@ public abstract class ActionEventListener implements SensorEventListener {
         this.sensorManager = sensorManager;
     }
 
-    public boolean startListener(int duration) {
+    public boolean startListener(double duration) {
         sensorManager.registerListener(this, this.sensor, SensorManager.SENSOR_DELAY_NORMAL);
         return true;
     }

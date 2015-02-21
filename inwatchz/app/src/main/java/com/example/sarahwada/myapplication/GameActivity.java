@@ -2,6 +2,7 @@ package com.example.sarahwada.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.widget.TextView;
@@ -25,21 +26,24 @@ public class GameActivity extends Activity {
         mSensorHandler = new SensorHandler(this);
         mMotions = new MotionsContainer();
 
+        handleCountdownTimer();
+        handleGameState();
+    }
+
+    private void handleCountdownTimer() {
         CountDownTimer startTimer = new CountDownTimer(3000, 1000) {
-            TextView mTimer = (TextView) findViewById(R.id.timer);
+            TextView mDetails = (TextView) findViewById(R.id.details);
 
             @Override
             public void onTick(long millisUntilFinished) {
-                mTimer.setText("" + millisUntilFinished / 1000);
+                mDetails.setText("" + millisUntilFinished / 1000);
             }
 
             @Override
             public void onFinish() {
-                mTimer.setText("");
+                mDetails.setText("");
             }
         }.start();
-
-        handleGameState();
     }
 
     private void handleGameState() {
@@ -47,11 +51,12 @@ public class GameActivity extends Activity {
         double durationRatio = 1.00;
 
         while (isMotionCorrect) {
-            // TODO: inflate views of randomly chosen motion
-            Motion currentCommand = mMotions.randomize();
-            updateView(currentCommand);
-            isMotionCorrect = mSensorHandler.handle(currentCommand.getUserAction(),
-                    durationRatio * );
+            // TODO: Implement MotionsContainer Class
+            Motion currentAction = mMotions.randomize();
+            updateView(currentAction);
+            isMotionCorrect =
+                    mSensorHandler.handle(currentAction.getUserAction(),
+                            durationRatio * currentAction.getDuration());
             if (durationRatio > 0.5)
                 durationRatio -= 0.01;
         }
@@ -61,7 +66,9 @@ public class GameActivity extends Activity {
     }
 
     private void updateView(Motion m) {
-
+        TextView details = (TextView) findViewById(R.id.details);
+        details.setText(m.getText());
+        MediaPlayer.create(this, m.getSound()).start();
     }
 
 }

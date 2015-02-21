@@ -25,7 +25,9 @@ public class TwistEventListener extends ActionEventListener {
     public void onSensorChanged(SensorEvent event) {
         // Gather all event data
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
-            getRotationVector(event);
+            if (!success) {
+                getRotationVector(event);
+            }
         }
     }
 
@@ -53,13 +55,13 @@ public class TwistEventListener extends ActionEventListener {
     }
 
     private boolean isStartingPosition(float pitch, float roll) {
-        return ((Math.abs(pitch) < 10) &&
-                (Math.abs(roll) < 10));
+        return ((Math.abs(pitch) < 20) &&
+                (Math.abs(roll) < 20));
     }
 
     private boolean isEndingPosition(float pitch, float roll) {
-        return ((pitch > 70) &&
-                (pitch < 90) &&
+        return ((pitch > 65) &&
+                (pitch < 95) &&
                 (Math.abs(roll) < 50));
     }
 

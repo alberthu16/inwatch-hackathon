@@ -21,9 +21,8 @@ public abstract class ActionEventListener implements SensorEventListener {
         this.sensorManager = sensorManager;
     }
 
-    public void startListener(double timeout) {
+    public void startListener() {
         Log.i("EventListener", "start listening");
-        //TODO: timeout logic
         sensorManager.registerListener(this, this.sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 

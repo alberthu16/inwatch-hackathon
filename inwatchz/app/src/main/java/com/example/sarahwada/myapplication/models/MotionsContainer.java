@@ -18,7 +18,7 @@ public class MotionsContainer {
 
     public MotionsContainer() {
         mAllMotions = new ArrayList();
-        mAllMotions.add(new Motion("Push", R.raw.boom, UserAction.PUSH, 2.0));
+        mAllMotions.add(new Motion("Push", R.raw.boom, UserAction.PUSH, 2L));
     }
 
     public Motion random() {

@@ -44,6 +44,7 @@ public class SensorHandler {
         this.actionListeners.put(UserAction.PULL, pullEventListener);
         this.actionListeners.put(UserAction.PUSH, pushEventListener);
         this.actionListeners.put(UserAction.TWIST, twistEventListener);
+        this.actionListeners.put(UserAction.PUNCH, punchEventListener);
 
         Log.i("SensorHandler", "Initialized all event listeners, sensors, and structures");
 
@@ -53,7 +54,7 @@ public class SensorHandler {
 //        sensorManager.registerListener(pushEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
 //        sensorManager.registerListener(punchEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        handle(UserAction.TWIST, 10000);//10 seconds timeout
+        //handle(UserAction.TWIST, 10000);//10 seconds timeout
 
     }
 
@@ -64,12 +65,11 @@ public class SensorHandler {
      * @return
      */
     public boolean handle(UserAction action, long timeout) {
-        //TODO: need some way to get the timeout into the EventListener.  See note at line40
-
         // Get event listener associated with this command
         final ActionEventListener listener = actionListeners.get(action);
         listener.startListener();
 
+        // TODO: have this thread wait on runnable
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -78,6 +78,7 @@ public class SensorHandler {
             }
         }, timeout);
 
+        // TODO: returning here
         return listener.success;
     }
 

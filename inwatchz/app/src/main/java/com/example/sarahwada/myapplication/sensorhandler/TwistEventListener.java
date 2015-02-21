@@ -4,38 +4,63 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
  *
  */
 public class TwistEventListener extends ActionEventListener {
+    private boolean initialized = false;
+
+    float[] orientationMatrix = new float[3];
+    float[] rotationMatrix = new float[9];
 
     public TwistEventListener(SensorManager sensorManager, Context context) {
         super(sensorManager, context);
-        this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            getAccelerometer(event);
+        // Gather all event data
+        if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+            getRotationVector(event);
         }
     }
 
-    private void getAccelerometer(SensorEvent event) {
-        float[] values = event.values;
-        // Movement
-        float x = values[0];
-        float y = values[1];
-        float z = values[2];
+    private void getRotationVector(SensorEvent event) {
+        SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values);
+        SensorManager.getOrientation(rotationMatrix, orientationMatrix);
 
-        float accelationSquareRoot = (x * x + y * y + z * z)
-                / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-        long actualTime = event.timestamp;
-        if (accelationSquareRoot >= 2) {
-            Toast.makeText(context, "Device was shuffled: " + actualTime, Toast.LENGTH_SHORT).show();
+        // 1 radian = 57.2957795 degrees
+        // orientationMatrix = [yaw (z-axis), pitch (x-axis), roll (y-axis)]
+        float yaw = orientationMatrix[0] * 57.2957795f;
+        float pitch = orientationMatrix[1] * 57.2957795f;
+        float roll = orientationMatrix[2] * 57.2957795f;
+
+        // Make sure user is in starting position
+        if (!initialized && isStartingPosition(pitch, roll)) {
+            Log.i("Starting position", String.format("Pitch: %f, Roll: %f", pitch, roll));
+            initialized = true;
+        // Check if user is in ending position
+        } else if (initialized && isEndingPosition(pitch, roll)) {
+            Log.i("Ending position", "SUCCESS");
+            Log.i("Ending position", String.format("Pitch: %f, Roll: %f", pitch, roll));
+            this.success = true;
+            Toast.makeText(context, "TWIST! ", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean isStartingPosition(float pitch, float roll) {
+        return ((Math.abs(pitch) < 10) &&
+                (Math.abs(roll) < 10));
+    }
+
+    private boolean isEndingPosition(float pitch, float roll) {
+        return ((pitch > 70) &&
+                (pitch < 90) &&
+                (Math.abs(roll) < 50));
     }
 
     @Override

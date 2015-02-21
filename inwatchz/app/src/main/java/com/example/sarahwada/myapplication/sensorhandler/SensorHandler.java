@@ -9,8 +9,6 @@ import com.example.sarahwada.myapplication.models.MotionsContainer.UserAction;
 
 import java.util.Hashtable;
 
-;
-
 /**
  * SensorHandler is responsible for handling listeners and sensors based on the user action.
  */
@@ -58,6 +56,8 @@ public class SensorHandler {
         sensorManager.registerListener(pullEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(pushEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(punchEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        twistEventListener.startListener(1000); //10ms
         //sensorManager.unregisterListener();
     }
 

@@ -49,6 +49,7 @@ public class PushEventListener extends ActionEventListener {
 
     private void executePushAction(float magnitude) {
         Toast.makeText(context, "Device was pushed: " + magnitude, Toast.LENGTH_SHORT).show();
+        this.success = true;
     }
 
     @Override

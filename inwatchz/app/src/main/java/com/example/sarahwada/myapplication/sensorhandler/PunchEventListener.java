@@ -49,6 +49,7 @@ public class PunchEventListener extends ActionEventListener {
 
     private void executePunchAction(float magnitude) {
         Toast.makeText(context, "ow: " + magnitude, Toast.LENGTH_SHORT).show();
+        this.success = true;
     }
 
     @Override

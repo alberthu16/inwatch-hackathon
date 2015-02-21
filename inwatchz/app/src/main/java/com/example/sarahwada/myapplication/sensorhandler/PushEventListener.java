@@ -26,7 +26,8 @@ public class PushEventListener extends ActionEventListener {
     boolean firstUpdate = true;
 
     /* Push Threshold */
-    final float pushThreshold = 3.0f;
+    final float pushThreshold = 6.3f;
+    float magnitude;
 
     /* Has a motion started */
     boolean pushInitiated = false;
@@ -41,6 +42,17 @@ public class PushEventListener extends ActionEventListener {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
             float[] values = event.values;
+            float[] gravity = {0, 0, 0};
+
+            float alpha = 0.8f;
+
+            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
+            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
+            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+
+            values[0] = event.values[0] - gravity[0];
+            values[1] = event.values[1] - gravity[1];
+            values[2] = event.values[2] - gravity[2];
 
             /* Detected movement */
             float x = values[0];
@@ -51,35 +63,26 @@ public class PushEventListener extends ActionEventListener {
             if ( y > 0 ) {
                 pushing = true;
             }
-
             updateAccelParameters(x, y, z);
 
             if ((!pushInitiated) && isPullOrPushed() && pushing) {
                 pushInitiated = true;
             } else if ((pushInitiated) && isPullOrPushed() && pushing) {
-                executePushAction(yAccel);
+                executePushAction(magnitude);
             } else if ((pushInitiated) && (!isPullOrPushed())) {
                 pushInitiated = false;
             }
         }
     }
 
-    /* If the values of acceleration have changed on at least two axises, we are probably in a shake motion */
-    private boolean isAccelerationChanged() {
-        float deltaX = Math.abs(xPrev- xAccel);
-        float deltaY = Math.abs(yPrev - yAccel);
-        float deltaZ = Math.abs(zPrev - zAccel);
-        return (deltaX > pushThreshold && deltaY > pushThreshold)
-                || (deltaX > pushThreshold && deltaZ > pushThreshold)
-                || (deltaY > pushThreshold && deltaZ > pushThreshold);
-    }
-
     private boolean isPullOrPushed() {
         float deltaY = Math.abs(yPrev - yAccel);
         float deltaX = Math.abs(xPrev - xAccel);
-        float xWeight = 0.3f;
+        float xWeight = 0.5f;
 
-        return (xWeight * deltaX + deltaY > pushThreshold);
+        magnitude = (xWeight * deltaX + deltaY);
+
+        return (magnitude > pushThreshold);
     }
 
     /* Store the acceleration values given by the sensor */

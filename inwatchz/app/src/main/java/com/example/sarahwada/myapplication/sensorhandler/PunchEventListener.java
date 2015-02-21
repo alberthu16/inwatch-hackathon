@@ -26,7 +26,8 @@ public class PunchEventListener extends ActionEventListener {
     boolean firstUpdate = true;
 
     /* Pull Threshold */
-    final float punchThreshold = 3.0f;
+    final float punchThreshold = 5.5f;
+    float magnitude;
 
     /* Has a motion started */
     boolean punchInitiated = false;
@@ -41,32 +42,37 @@ public class PunchEventListener extends ActionEventListener {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
             float[] values = event.values;
+            float[] gravity = {0, 0, 0};
+
+            float alpha = 0.8f;
+
+            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
+            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
+            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+
+            values[0] = event.values[0] - gravity[0];
+            values[1] = event.values[1] - gravity[1];
+            values[2] = event.values[2] - gravity[2];
 
             /* Detected movement */
             float x = values[0];
+            boolean punching = false;
+            if ( x < 0 ) {
+                punching = true;
+            }
             float y = values[1];
             float z = values[2];
 
             updateAccelParameters(x, y, z);
 
-            if ((!punchInitiated) && isPunched()) {
+            if ((!punchInitiated) && isPunched() && punching) { // x<0 for right-handed only
                 punchInitiated = true;
-            } else if ((punchInitiated) && isPunched()) {
-                executePullAction(yAccel);
+            } else if ((punchInitiated) && isPunched() && punching) {
+                executePunchAction(magnitude);
             } else if ((punchInitiated) && (!isPunched())) {
                 punchInitiated = false;
             }
         }
-    }
-
-    /* If the values of acceleration have changed on at least two axises, we are probably in a shake motion */
-    private boolean isAccelerationChanged() {
-        float deltaX = Math.abs(xPrev- xAccel);
-        float deltaY = Math.abs(yPrev - yAccel);
-        float deltaZ = Math.abs(zPrev - zAccel);
-        return (deltaX > punchThreshold && deltaY > punchThreshold)
-                || (deltaX > punchThreshold && deltaZ > punchThreshold)
-                || (deltaY > punchThreshold && deltaZ > punchThreshold);
     }
 
     private boolean isPunched() {
@@ -74,7 +80,9 @@ public class PunchEventListener extends ActionEventListener {
         float deltaX = Math.abs(xPrev - xAccel);
         float yWeight = 0.2f;
 
-        return (yWeight * deltaY + deltaX > punchThreshold);
+        magnitude = (yWeight * deltaY + deltaX);
+
+        return (magnitude > punchThreshold);
     }
 
     /* Store the acceleration values given by the sensor */
@@ -96,7 +104,7 @@ public class PunchEventListener extends ActionEventListener {
         zAccel = zNewAccel;
     }
 
-    private void executePullAction(float magnitude) {
+    private void executePunchAction(float magnitude) {
         Toast.makeText(context, "ow: " + magnitude, Toast.LENGTH_SHORT).show();
     }
 

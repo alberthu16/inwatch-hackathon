@@ -11,26 +11,12 @@ import android.widget.Toast;
  */
 public class PushEventListener extends ActionEventListener {
 
-
-    /* Current acceleration values */
-    float xAccel;
-    float yAccel;
-    float zAccel;
-
-    /* Previous acceleration values */
-    float xPrev;
-    float yPrev;
-    float zPrev;
-
-    /* Supress first motion? */
-    boolean firstUpdate = true;
+    float mLastAccelWithGrav = 0.00f;
+    float mAccelWithGrav = SensorManager.GRAVITY_EARTH;
+    float mAccelNoGrav = SensorManager.GRAVITY_EARTH;
 
     /* Push Threshold */
-    final float pushThreshold = 6.0f;
-    float magnitude;
-
-    /* Has a motion started */
-    boolean pushInitiated = false;
+    final float pushThreshold = 8.0f;
 
     public PushEventListener(SensorManager sensorManager, Context context) {
         super(sensorManager, context);
@@ -42,66 +28,23 @@ public class PushEventListener extends ActionEventListener {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
             float[] values = event.values;
-            float[] gravity = {0, 0, 0};
-
-            float alpha = 0.8f;
-
-            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
-
-            values[0] = event.values[0] - gravity[0];
-            values[1] = event.values[1] - gravity[1];
-            values[2] = event.values[2] - gravity[2];
 
             /* Detected movement */
             float x = values[0];
             float y = values[1];
-            float z = values[2];
 
-            boolean pushing = false;
-            if ( y > 0 ) {
-                pushing = true;
-            }
-            updateAccelParameters(x, y, z);
+            boolean pushing = (y > 0);
 
-            if ((!pushInitiated) && isPullOrPushed() && pushing) {
-                pushInitiated = true;
-            } else if ((pushInitiated) && isPullOrPushed() && pushing) {
-                executePushAction(magnitude);
-            } else if ((pushInitiated) && (!isPullOrPushed())) {
-                pushInitiated = false;
+            mLastAccelWithGrav = mAccelWithGrav;
+            mAccelWithGrav = android.util.FloatMath.sqrt(0.2f*x*x + 1.9f*y*y);
+            float delta = mAccelWithGrav - mLastAccelWithGrav;
+            mAccelNoGrav = mAccelNoGrav * 0.9f + delta; //low-pass filter
+
+
+            if (mAccelNoGrav > pushThreshold && pushing) {
+                executePushAction(mAccelNoGrav);
             }
         }
-    }
-
-    private boolean isPullOrPushed() {
-        float deltaY = Math.abs(yPrev - yAccel);
-        float deltaX = Math.abs(xPrev - xAccel);
-        float xWeight = 0.2f;
-
-        magnitude = (xWeight * deltaX + 1.3f * deltaY);
-
-        return (magnitude > pushThreshold);
-    }
-
-    /* Store the acceleration values given by the sensor */
-    private void updateAccelParameters(float xNewAccel, float yNewAccel,
-                                       float zNewAccel) {
-        /* we have to suppress the first change of acceleration, it results from first values being initialized with 0 */
-        if (firstUpdate) {
-            xPrev = xNewAccel;
-            yPrev = yNewAccel;
-            zPrev = zNewAccel;
-            firstUpdate = false;
-        } else {
-            xPrev = xAccel;
-            yPrev = yAccel;
-            zPrev = zAccel;
-        }
-        xAccel = xNewAccel;
-        yAccel = yNewAccel;
-        zAccel = zNewAccel;
     }
 
     private void executePushAction(float magnitude) {

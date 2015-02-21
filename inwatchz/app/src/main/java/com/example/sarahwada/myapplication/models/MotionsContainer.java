@@ -13,12 +13,17 @@ public class MotionsContainer {
     private List<Motion> mAllMotions;
 
     public enum UserAction {
-        PUSH, PULL, TWIST
+        PUSH, PULL, TWIST, PUNCH, TAP
     }
 
     public MotionsContainer() {
         mAllMotions = new ArrayList();
-        mAllMotions.add(new Motion("Push", R.raw.boom, UserAction.PUSH, 2L));
+        mAllMotions.add(new Motion("Push", R.raw.boom, UserAction.PUSH, 2000));
+        mAllMotions.add(new Motion("Pull", R.raw.boom, UserAction.PULL, 20000));
+        mAllMotions.add(new Motion("Twist", R.raw.boom, UserAction.TWIST, 2000));
+        mAllMotions.add(new Motion("Punch", R.raw.boom, UserAction.PUNCH, 2000));
+        mAllMotions.add(new Motion("Tap", R.raw.boom, UserAction.TAP, 2000));
+
     }
 
     public Motion random() {

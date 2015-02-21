@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         ImageView startGame = (ImageView) findViewById(R.id.start_game);
-        startGame.setImageResource(R.drawable.ic_action_play);
+        startGame.setImageResource(R.drawable.start_screen);
         startGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -25,6 +25,10 @@ public class MainActivity extends Activity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
 }

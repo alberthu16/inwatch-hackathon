@@ -68,4 +68,7 @@ public class GameActivity extends Activity {
         MediaPlayer.create(this, m.getSound()).start();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
 }

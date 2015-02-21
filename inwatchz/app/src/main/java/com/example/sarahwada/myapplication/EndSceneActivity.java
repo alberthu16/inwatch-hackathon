@@ -25,4 +25,8 @@ public class EndSceneActivity extends Activity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 }

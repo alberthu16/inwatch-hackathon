@@ -51,8 +51,7 @@ public class GameActivity extends Activity {
         double durationRatio = 1.00;
 
         while (isMotionCorrect) {
-            // TODO: Implement MotionsContainer Class
-            Motion currentAction = mMotions.randomize();
+            Motion currentAction = mMotions.random();
             updateView(currentAction);
             isMotionCorrect =
                     mSensorHandler.handle(currentAction.getUserAction(),

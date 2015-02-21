@@ -1,18 +1,16 @@
 package com.example.sarahwada.myapplication.models;
 
-import android.net.Uri;
-
 /**
  * Created by yujuncho on 2/21/15.
  */
 public class Motion {
     private String mCommand;
-    private Uri mSound;
+    private int mSound;
     private MotionsContainer.UserAction mUserAction;
     private double mDuration;
 
     public Motion(String command,
-                  Uri sound,
+                  int sound,
                   MotionsContainer.UserAction userAction,
                   double duration) {
         mCommand= command;
@@ -29,11 +27,11 @@ public class Motion {
         return mCommand;
     }
 
-    public void setSound(Uri sound) {
+    public void setSound(int sound) {
         mSound = sound;
     }
 
-    public Uri getSound() {
+    public int getSound() {
         return mSound;
     }
 

@@ -7,4 +7,9 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="title_activity_end_scene">EndSceneActivity</string>
 
+    <!-- Motion Texts -->
+    <string name="push">Push</string>
+    <string name="pull">Pull</string>
+    <string name="twist">Twist</string>
+
 </resources>

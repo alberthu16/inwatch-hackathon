@@ -10,19 +10,10 @@ import android.widget.ImageView;
 public class MainActivity extends Activity {
     private Context context;
 
-    // TODO(yujun): I put the enum here so I could use it in the SensorHandler, but feel free to move it. - Sarah
-    public enum UserAction {
-        PUSH, PULL, TWIST
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        context = this;
-//        SensorHandler handler = new SensorHandler(context);
-
 
         ImageView startGame = (ImageView) findViewById(R.id.start_game);
         startGame.setImageResource(R.drawable.ic_action_play);

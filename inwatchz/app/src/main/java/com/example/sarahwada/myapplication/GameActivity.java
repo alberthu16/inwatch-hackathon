@@ -6,11 +6,12 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.widget.TextView;
 
+import com.example.sarahwada.myapplication.models.Motion;
+import com.example.sarahwada.myapplication.models.MotionsContainer;
 import com.example.sarahwada.myapplication.sensorhandler.SensorHandler;
 
 
 public class GameActivity extends Activity {
-    // TODO: create SensorHandler Class
     private SensorHandler mSensorHandler;
     // TODO: create MotionsContainer Class
     //      Will also need a Command class
@@ -21,7 +22,7 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        mSensorHandler = new SensorHandler();
+        mSensorHandler = new SensorHandler(this);
         mMotions = new MotionsContainer();
 
         CountDownTimer startTimer = new CountDownTimer(3000, 1000) {
@@ -44,16 +45,23 @@ public class GameActivity extends Activity {
     private void handleGameState() {
         boolean isMotionCorrect = true;
         double durationRatio = 1.00;
+
         while (isMotionCorrect) {
             // TODO: inflate views of randomly chosen motion
-            Command currentCommand = mMotions.randomize();
+            Motion currentCommand = mMotions.randomize();
             updateView(currentCommand);
-            isMotionCorrect = mSensorHandler.handle(mMotions.current);
+            isMotionCorrect = mSensorHandler.handle(currentCommand.getUserAction(),
+                    durationRatio * );
             if (durationRatio > 0.5)
                 durationRatio -= 0.01;
         }
+
         Intent intent = new Intent(this, EndSceneActivity.class);
         startActivity(intent);
+    }
+
+    private void updateView(Motion m) {
+
     }
 
 }

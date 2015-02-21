@@ -24,7 +24,7 @@ public class GameActivity extends Activity {
         mSensorHandler = new SensorHandler(this);
         mMotions = new MotionsContainer();
 
-        //handleCountdownTimer();
+        handleCountdownTimer();
     }
 
     private void handleCountdownTimer() {

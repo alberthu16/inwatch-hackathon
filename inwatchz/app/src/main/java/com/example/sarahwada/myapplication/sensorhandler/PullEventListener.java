@@ -3,14 +3,13 @@ package com.example.sarahwada.myapplication.sensorhandler;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.Toast;
 
 /**
  *
  */
-public class PullEventListener implements SensorEventListener {
+public class PullEventListener extends ActionEventListener {
     private Context context;
     private SensorManager sensorManager;
     // TODO: one for now, can be a list later on
@@ -23,11 +22,12 @@ public class PullEventListener implements SensorEventListener {
 
     }
 
-    public void startListener(int duration) {
+    public boolean startListener(int duration) {
         //sensorManager.registerListener()
+        return true;
     }
 
-    public void stopListener(int duration) {
+    public void stopListener() {
         //sensorManager.unregisterListener()
     }
 

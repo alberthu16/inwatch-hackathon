@@ -3,20 +3,28 @@ package com.example.sarahwada.myapplication.sensorhandler;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.Toast;
 
 /**
  *
  */
-public class ShuffleEventListener implements SensorEventListener {
+public class ShuffleEventListener extends ActionEventListener {
     private Context context;
     private SensorManager sensorManager;
 
     public ShuffleEventListener(SensorManager sensorManager, Context context) {
         this.context = context;
         this.sensorManager = sensorManager;
+    }
+
+    public boolean startListener(int duration) {
+        //sensorManager.registerListener()
+        return true;
+    }
+
+    public void stopListener() {
+        //sensorManager.unregisterListener()
     }
 
     @Override

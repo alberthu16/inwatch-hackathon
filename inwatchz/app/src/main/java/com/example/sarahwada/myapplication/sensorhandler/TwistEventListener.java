@@ -3,20 +3,28 @@ package com.example.sarahwada.myapplication.sensorhandler;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.Toast;
 
 /**
  *
  */
-public class TwistEventListener implements SensorEventListener {
+public class TwistEventListener extends ActionEventListener {
     private Context context;
     private SensorManager sensorManager;
 
     public TwistEventListener(SensorManager sensorManager, Context context) {
         this.context = context;
         this.sensorManager = sensorManager;    }
+
+    public boolean startListener(int duration) {
+        //sensorManager.registerListener()
+        return true;
+    }
+
+    public void stopListener() {
+        //sensorManager.unregisterListener()
+    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {

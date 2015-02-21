@@ -9,7 +9,7 @@ import android.widget.Toast;
 /**
  *
  */
-public class PullEventListener extends ActionEventListener {
+public class PunchEventListener extends ActionEventListener {
 
 
     /* Current acceleration values */
@@ -26,13 +26,13 @@ public class PullEventListener extends ActionEventListener {
     boolean firstUpdate = true;
 
     /* Pull Threshold */
-    final float pullThreshold = 5.0f;
+    final float punchThreshold = 5.0f;
     float magnitude;
 
     /* Has a motion started */
-    boolean pullInitiated = false;
+    boolean punchInitiated = false;
 
-    public PullEventListener(SensorManager sensorManager, Context context) {
+    public PunchEventListener(SensorManager sensorManager, Context context) {
         super(sensorManager, context);
         this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
@@ -54,36 +54,35 @@ public class PullEventListener extends ActionEventListener {
             values[1] = event.values[1] - gravity[1];
             values[2] = event.values[2] - gravity[2];
 
-
             /* Detected movement */
             float x = values[0];
+            boolean punching = false;
+            if ( x < 0 ) {
+                punching = true;
+            }
             float y = values[1];
             float z = values[2];
 
-            boolean pulling = false;
-            if ( y < 0 ) {
-                pulling = true;
-            }
             updateAccelParameters(x, y, z);
 
-            if ((!pullInitiated) && isPullOrPushed() && pulling) {
-                pullInitiated = true;
-            } else if ((pullInitiated) && isPullOrPushed() && pulling) {
-                executePullAction(magnitude);
-            } else if ((pullInitiated) && (!isPullOrPushed())) {
-                pullInitiated = false;
+            if ((!punchInitiated) && isPunched() && punching) { // x<0 for right-handed only
+                punchInitiated = true;
+            } else if ((punchInitiated) && isPunched() && punching) {
+                executePunchAction(magnitude);
+            } else if ((punchInitiated) && (!isPunched())) {
+                punchInitiated = false;
             }
         }
     }
 
-    private boolean isPullOrPushed() {
+    private boolean isPunched() {
         float deltaY = Math.abs(yPrev - yAccel);
         float deltaX = Math.abs(xPrev - xAccel);
-        float xWeight = 0.2f;
+        float yWeight = 0.1f;
 
-        magnitude = (xWeight * deltaX + 1.3f * deltaY);
+        magnitude = (yWeight * deltaY + 1.3f * deltaX);
 
-        return (magnitude > pullThreshold);
+        return (magnitude > punchThreshold);
     }
 
     /* Store the acceleration values given by the sensor */
@@ -105,8 +104,8 @@ public class PullEventListener extends ActionEventListener {
         zAccel = zNewAccel;
     }
 
-    private void executePullAction(float magnitude) {
-        Toast.makeText(context, "Device was pulled: " + magnitude, Toast.LENGTH_SHORT).show();
+    private void executePunchAction(float magnitude) {
+        Toast.makeText(context, "ow: " + magnitude, Toast.LENGTH_SHORT).show();
     }
 
     @Override

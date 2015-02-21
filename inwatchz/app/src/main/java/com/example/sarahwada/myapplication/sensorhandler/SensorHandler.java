@@ -22,6 +22,7 @@ public class SensorHandler {
     ActionEventListener shuffleEventListener;//TODO: example, delete instances of this
     ActionEventListener pullEventListener;
     ActionEventListener pushEventListener;
+    ActionEventListener punchEventListener;
     ActionEventListener twistEventListener;
 
     // Maps the user action to what event listeners it requires
@@ -39,6 +40,7 @@ public class SensorHandler {
         this.shuffleEventListener = new ShuffleEventListener(sensorManager, context);
         this.pullEventListener = new PullEventListener(sensorManager, context);
         this.pushEventListener = new PushEventListener(sensorManager, context);
+        this.punchEventListener = new PunchEventListener(sensorManager, context);
         this.twistEventListener = new TwistEventListener(sensorManager, context);
 
         // Store event listeners
@@ -52,7 +54,10 @@ public class SensorHandler {
 
         // TODO: here for now to get something running
         Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sensorManager.registerListener(shuffleEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorManager.registerListener(shuffleEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(pullEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(pushEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(punchEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
         //sensorManager.unregisterListener();
     }
 
@@ -61,9 +66,9 @@ public class SensorHandler {
 
         // Get event listener associated with this command
         ActionEventListener listener = actionListeners.get(action);
-        boolean success = listener.startListener(timeout);
+        listener.startListener(timeout);
         listener.stopListener();
-        return success;
+        return listener.success;
     }
 
 }

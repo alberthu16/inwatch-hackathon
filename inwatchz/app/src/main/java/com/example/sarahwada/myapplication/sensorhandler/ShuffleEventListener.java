@@ -1,4 +1,4 @@
-package com.example.sarahwada.myapplication;
+package com.example.sarahwada.myapplication.sensorhandler;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -10,13 +10,13 @@ import android.widget.Toast;
 /**
  *
  */
-public class DropEventListener implements SensorEventListener {
-    private SensorManager sensorManager;
+public class ShuffleEventListener implements SensorEventListener {
     private Context context;
+    private SensorManager sensorManager;
 
-    public DropEventListener(SensorManager manager, Context context) {
-        this.sensorManager = manager;
+    public ShuffleEventListener(SensorManager sensorManager, Context context) {
         this.context = context;
+        this.sensorManager = sensorManager;
     }
 
     @Override

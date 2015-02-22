@@ -2,6 +2,7 @@ package com.example.sarahwada.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -104,10 +105,14 @@ public class GameActivity extends Activity {
     }
 
     private void updateView(Motion m) {
-        if (m.getUserAction() != MotionsContainer.UserAction.TAP ) {
-            TextView details = (TextView) findViewById(R.id.details);
-            details.setText(m.getText());
+        TextView details = (TextView) findViewById(R.id.details);
+        if (m.getUserAction() != MotionsContainer.UserAction.TAP) {
+            details.setTextColor(Color.BLACK);
+        } else if (m.getUserAction() == MotionsContainer.UserAction.TAP) {
+            details.setTextColor(Color.WHITE);
         }
+
+        details.setText(m.getText());
         ImageView image = (ImageView) findViewById(R.id.image);
         image.setImageResource(m.getImage());
         MediaPlayer.create(this, m.getSound()).start();

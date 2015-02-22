@@ -20,7 +20,7 @@ public class TapEventListener extends ActionEventListener {
     float mAccelNoGrav = SensorManager.GRAVITY_EARTH;
 
     /* Pull Threshold */
-    final float tapThreshold = 7.5f;
+    final float tapThreshold = 9.0f;
 
     public TapEventListener(SensorManager sensorManager, Context context) {
         super(sensorManager, context);
@@ -53,7 +53,6 @@ public class TapEventListener extends ActionEventListener {
     }
 
     private void executeTapAction(float magnitude) {
-        Toast.makeText(context, "bloop: " + magnitude, Toast.LENGTH_SHORT).show();
         this.success = true;
         this.context.setIsMotionCorrect(true);
         ImageView image = (ImageView) this.context.findViewById(R.id.image);

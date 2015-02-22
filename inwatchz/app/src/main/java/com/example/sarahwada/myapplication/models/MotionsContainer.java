@@ -11,6 +11,8 @@ import java.util.Random;
  */
 public class MotionsContainer {
     private List<Motion> mAllMotions;
+    // timeout 10 seconds
+    private long timeout = 10000;
 
     public enum UserAction {
         PUSH, PULL, TWIST, PUNCH, TAP
@@ -18,11 +20,11 @@ public class MotionsContainer {
 
     public MotionsContainer() {
         mAllMotions = new ArrayList();
-        mAllMotions.add(new Motion("Push", R.raw.boom, UserAction.PUSH, 1000));
-        mAllMotions.add(new Motion("Pull", R.raw.boom, UserAction.PULL, 1000));
-        mAllMotions.add(new Motion("Twist", R.raw.boom, UserAction.TWIST, 1000));
-        mAllMotions.add(new Motion("Punch", R.raw.boom, UserAction.PUNCH, 1000));
-//        mAllMotions.add(new Motion("Tap", R.raw.boom, UserAction.TAP, 2000));
+        mAllMotions.add(new Motion("Push", R.raw.boom, UserAction.PUSH, timeout));
+        mAllMotions.add(new Motion("Pull", R.raw.boom, UserAction.PULL, timeout));
+        mAllMotions.add(new Motion("Twist", R.raw.boom, UserAction.TWIST, timeout));
+        mAllMotions.add(new Motion("Punch", R.raw.boom, UserAction.PUNCH, timeout));
+//        mAllMotions.add(new Motion("Tap", R.raw.boom, UserAction.TAP, timeout));
 
     }
 

@@ -6,28 +6,33 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
+import com.example.sarahwada.myapplication.GameActivity;
+
 /**
  * Abstract base class for all event listeners.
  */
 public abstract class ActionEventListener implements SensorEventListener {
-    public Context context;
+    public GameActivity context;
     public SensorManager sensorManager;
     public boolean success = false;
+    public boolean isActive = false;
     public Sensor sensor;
 
     public ActionEventListener(SensorManager sensorManager, Context context) {
-        this.context = context;
+        this.context = (GameActivity) context;
         this.sensorManager = sensorManager;
     }
 
     public void startListener() {
         Log.i("EventListener", "start listening");
-        sensorManager.registerListener(this, this.sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        this.isActive = true;
+        this.sensorManager.registerListener(this, this.sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void stopListener() {
+        this.isActive = false;
         this.success = false;
-        sensorManager.unregisterListener(this, this.sensor);
+        this.sensorManager.unregisterListener(this, this.sensor);
         Log.i("EventListener", "stop listening");
     }
 }

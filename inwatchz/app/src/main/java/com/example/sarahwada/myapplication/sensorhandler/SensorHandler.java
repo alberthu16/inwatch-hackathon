@@ -2,9 +2,7 @@ package com.example.sarahwada.myapplication.sensorhandler;
 
 import android.app.Activity;
 import android.content.Context;
-import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.widget.Toast;
 
 import com.example.sarahwada.myapplication.R;
 import com.example.sarahwada.myapplication.models.MotionsContainer.UserAction;
-
 import java.util.Hashtable;
 
 /**
@@ -58,52 +55,22 @@ public class SensorHandler extends Activity {
         this.actionListeners.put(UserAction.PUNCH, punchEventListener);
 
         Log.i("SensorHandler", "Initialized all event listeners, sensors, and structures");
-
-        // TODO: here for now to get something running
-        Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-//        sensorManager.registerListener(pullEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-//        sensorManager.registerListener(pushEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-//        sensorManager.registerListener(punchEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        //handle(UserAction.TWIST, 10000);//10 seconds timeout
     }
 
-    /**
-     *
-     * @param action
-     * @param timeout In milliseconds
-     * @return
-     */
-    public boolean handle(UserAction action, long timeout) {
-
-        // Taps are separate from sensor listeners
-        ImageView mImageView = (ImageView) findViewById(R.id.image);
-        if (action == UserAction.TAP) {
-            mImageView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    //show dialog here
-                    Toast.makeText(c, "TAP DAT", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-            });
-        }
-
+    public void handle(UserAction action) {
         // Get event listener associated with this command
         final ActionEventListener listener = actionListeners.get(action);
         listener.startListener();
+        Log.i("SensorHandler", "in handle method, started listener");
+    }
 
-        // TODO: have this thread wait on runnable
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+    public void cleanup() {
+        for (ActionEventListener listener : this.actionListeners.values()) {
+            if (listener.isActive) {
                 listener.stopListener();
             }
-        }, timeout);
-
-        // TODO: returning here
-        return listener.success;
+        }
+        Log.i("SensorHandler", "successfully cleaned up all listeners");
     }
 
 }

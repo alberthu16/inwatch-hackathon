@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +18,13 @@ import com.example.sarahwada.myapplication.sensorhandler.SensorHandler;
 public class GameActivity extends Activity {
     private SensorHandler mSensorHandler;
     private MotionsContainer mMotions;
+
+    private Motion currentAction;
+    private long currentDuration;
+
+    private boolean isMotionCorrect = true;
+    private long durationRatio = 100;
+    private int score = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +55,53 @@ public class GameActivity extends Activity {
         }.start();
     }
 
+    public void setIsMotionCorrect(boolean bool) {
+        Log.i("GameActivity", String.format("setIsMotionCorrect: %s", bool));
+        this.isMotionCorrect = bool;
+    }
+
     private void handleGameState() {
-        boolean isMotionCorrect = true;
-        double durationRatio = 1.00;
-        int score = -1;
+        // Schedule the initial runnable
+        this.currentAction = mMotions.random();
+        this.currentDuration = (durationRatio * currentAction.getDuration())/100;
+        Log.i("GameActivity", String.format("schedule first runnable, duration:%d", currentDuration));
+        final Handler handler = new Handler();
 
-        while (isMotionCorrect) {
-            score += 1;
-            Motion currentAction = mMotions.random();
-            updateView(currentAction);
-            isMotionCorrect =
-                    mSensorHandler.handle(currentAction.getUserAction(),
-                            (long) durationRatio * currentAction.getDuration());
-            if (durationRatio > 0.5)
-                durationRatio -= 0.01;
-        }
+        final Runnable playTurnRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mSensorHandler.cleanup();
 
+                if (!isMotionCorrect) {
+                    Log.i("GameActivity", "runnable: end game");
+                    endGame();
+                } else {
+                    Log.i("GameActivity", "starting current action handling");
+                    isMotionCorrect = false;
+                    score += 1;
+                    updateView(currentAction);
+                    mSensorHandler.handle(currentAction.getUserAction());
+
+                    // schedule the next a runnable
+                    currentDuration = (durationRatio * currentAction.getDuration())/100;
+                    Log.i("GameActivity", String.format("schedule next runnable, currActionDurration:%d", currentAction.getDuration()));
+                    Log.i("GameActivity", String.format("schedule next runnable, durationRatio:%d", durationRatio));
+                    Log.i("GameActivity", String.format("schedule next runnable, duration:%d", currentDuration));
+                    handler.postDelayed(this, currentDuration);
+
+                    if (durationRatio > 50) {
+                        durationRatio -= 1;
+                    }
+                    currentAction = mMotions.random();
+
+                }
+            }
+        };
+
+        handler.post(playTurnRunnable);
+    }
+
+    public void endGame() {
         Intent intent = new Intent(this, EndSceneActivity.class);
         intent.putExtra("score", String.format("%d", score));
         startActivity(intent);
@@ -78,4 +118,5 @@ public class GameActivity extends Activity {
     @Override
     public void onBackPressed() {
     }
+
 }

@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.sarahwada.myapplication.GameActivity;
 import com.example.sarahwada.myapplication.R;
 
 /**
@@ -52,7 +53,10 @@ public class TwistEventListener extends ActionEventListener {
         } else if (initialized && isEndingPosition(pitch, roll)) {
             Log.i("Ending position", "SUCCESS");
             Log.i("Ending position", String.format("Pitch: %f, Roll: %f", pitch, roll));
-            this.success = true;
+
+            this.success = true;//todo not needed
+            this.context.setIsMotionCorrect(true);
+
             Toast.makeText(context, "TWIST! ", Toast.LENGTH_SHORT).show();
 
             //TODO: play media sound

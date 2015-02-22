@@ -48,8 +48,10 @@ public class GameActivity extends Activity {
     private void handleGameState() {
         boolean isMotionCorrect = true;
         double durationRatio = 1.00;
+        int score = -1;
 
         while (isMotionCorrect) {
+            score += 1;
             Motion currentAction = mMotions.random();
             updateView(currentAction);
             isMotionCorrect =
@@ -60,6 +62,7 @@ public class GameActivity extends Activity {
         }
 
         Intent intent = new Intent(this, EndSceneActivity.class);
+        intent.putExtra("score", String.format("%d", score));
         startActivity(intent);
     }
 

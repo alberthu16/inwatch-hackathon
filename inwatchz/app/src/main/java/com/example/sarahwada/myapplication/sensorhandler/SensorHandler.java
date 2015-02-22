@@ -4,13 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.sarahwada.myapplication.R;
 import com.example.sarahwada.myapplication.models.MotionsContainer.UserAction;
+
 import java.util.Hashtable;
 
 /**
@@ -28,6 +24,7 @@ public class SensorHandler extends Activity {
     ActionEventListener pushEventListener;
     ActionEventListener punchEventListener;
     ActionEventListener twistEventListener;
+    ActionEventListener tapEventListener;
 
     // Maps the user action to what event listeners it requires
     Hashtable<UserAction, ActionEventListener> actionListeners = new Hashtable<>();
@@ -47,12 +44,14 @@ public class SensorHandler extends Activity {
         this.pushEventListener = new PushEventListener(sensorManager, context);
         this.punchEventListener = new PunchEventListener(sensorManager, context);
         this.twistEventListener = new TwistEventListener(sensorManager, context);
+        this.tapEventListener = new TapEventListener(sensorManager, context);
 
         // Store event listeners
         this.actionListeners.put(UserAction.PULL, pullEventListener);
         this.actionListeners.put(UserAction.PUSH, pushEventListener);
         this.actionListeners.put(UserAction.TWIST, twistEventListener);
         this.actionListeners.put(UserAction.PUNCH, punchEventListener);
+        this.actionListeners.put(UserAction.TAP, tapEventListener);
 
         Log.i("SensorHandler", "Initialized all event listeners, sensors, and structures");
     }

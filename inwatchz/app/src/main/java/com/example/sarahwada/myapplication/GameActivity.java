@@ -40,6 +40,7 @@ public class GameActivity extends Activity {
             @Override
             public void onFinish() {
                 mDetails.setText("");
+                mDetails.setTextSize(34);
                 handleGameState();
             }
         }.start();

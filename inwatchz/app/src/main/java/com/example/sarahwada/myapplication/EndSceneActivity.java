@@ -17,9 +17,9 @@ public class EndSceneActivity extends Activity {
         String score = getIntent().getExtras().getString("score");
 
         TextView scoreText = (TextView) findViewById(R.id.score);
-        scoreText.setText("You scored " + score + " :)");
+        scoreText.setText(""+score);
         ImageView startGame = (ImageView) findViewById(R.id.restart_game);
-        startGame.setImageResource(R.drawable.ic_action_replay);
+        startGame.setImageResource(R.drawable.end_scene);
         startGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

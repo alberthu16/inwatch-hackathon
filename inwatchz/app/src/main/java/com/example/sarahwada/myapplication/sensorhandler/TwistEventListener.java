@@ -8,9 +8,6 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.sarahwada.myapplication.GameActivity;
-import com.example.sarahwada.myapplication.R;
-
 /**
  *
  */
@@ -50,11 +47,11 @@ public class TwistEventListener extends ActionEventListener {
             Log.i("Starting position", String.format("Pitch: %f, Roll: %f", pitch, roll));
             initialized = true;
         // Check if user is in ending position
-        } else if (initialized && isEndingPosition(pitch, roll)) {
+        } else if (initialized && isEndingPosition(pitch)) {
             Log.i("Ending position", "SUCCESS");
             Log.i("Ending position", String.format("Pitch: %f, Roll: %f", pitch, roll));
 
-            this.success = true;//todo not needed
+            this.success = true;
             this.context.setIsMotionCorrect(true);
 
             Toast.makeText(context, "TWIST! ", Toast.LENGTH_SHORT).show();
@@ -66,14 +63,13 @@ public class TwistEventListener extends ActionEventListener {
     }
 
     private boolean isStartingPosition(float pitch, float roll) {
-        return ((Math.abs(pitch) < 20) &&
-                (Math.abs(roll) < 20));
+        return ((Math.abs(pitch) < 50) &&
+                (Math.abs(roll) < 50));
     }
 
-    private boolean isEndingPosition(float pitch, float roll) {
-        return ((pitch > 65) &&
-                (pitch < 95) &&
-                (Math.abs(roll) < 50));
+    private boolean isEndingPosition(float pitch) {
+        return ((pitch > 60) &&
+                (pitch < 100));
     }
 
     @Override

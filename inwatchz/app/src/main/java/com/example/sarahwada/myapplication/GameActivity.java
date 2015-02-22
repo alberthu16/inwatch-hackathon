@@ -64,7 +64,6 @@ public class GameActivity extends Activity {
         // Schedule the initial runnable
         this.currentAction = mMotions.random();
         this.currentDuration = (durationRatio * currentAction.getDuration())/100;
-        Log.i("GameActivity", String.format("schedule first runnable, duration:%d", currentDuration));
         final Handler handler = new Handler();
 
         final Runnable playTurnRunnable = new Runnable() {
@@ -84,9 +83,6 @@ public class GameActivity extends Activity {
 
                     // schedule the next a runnable
                     currentDuration = (durationRatio * currentAction.getDuration())/100;
-                    Log.i("GameActivity", String.format("schedule next runnable, currActionDurration:%d", currentAction.getDuration()));
-                    Log.i("GameActivity", String.format("schedule next runnable, durationRatio:%d", durationRatio));
-                    Log.i("GameActivity", String.format("schedule next runnable, duration:%d", currentDuration));
                     handler.postDelayed(this, currentDuration);
 
                     if (durationRatio > 50) {
@@ -108,8 +104,10 @@ public class GameActivity extends Activity {
     }
 
     private void updateView(Motion m) {
-        TextView details = (TextView) findViewById(R.id.details);
-        details.setText(m.getText());
+        if (m.getUserAction() != MotionsContainer.UserAction.TAP ) {
+            TextView details = (TextView) findViewById(R.id.details);
+            details.setText(m.getText());
+        }
         ImageView image = (ImageView) findViewById(R.id.image);
         image.setImageResource(m.getImage());
         MediaPlayer.create(this, m.getSound()).start();

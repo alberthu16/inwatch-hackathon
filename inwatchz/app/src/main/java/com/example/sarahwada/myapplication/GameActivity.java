@@ -104,8 +104,10 @@ public class GameActivity extends Activity {
     }
 
     private void updateView(Motion m) {
-        TextView details = (TextView) findViewById(R.id.details);
-        details.setText(m.getText());
+        if (m.getUserAction() != MotionsContainer.UserAction.TAP ) {
+            TextView details = (TextView) findViewById(R.id.details);
+            details.setText(m.getText());
+        }
         ImageView image = (ImageView) findViewById(R.id.image);
         image.setImageResource(m.getImage());
         MediaPlayer.create(this, m.getSound()).start();

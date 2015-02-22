@@ -25,7 +25,7 @@ public class MotionsContainer {
         mAllMotions.add(new Motion("Pull", R.raw.pull, R.drawable.pull, UserAction.PULL, 2000));
         mAllMotions.add(new Motion("Twist", R.raw.twist, R.drawable.twist, UserAction.TWIST, 2000));
         mAllMotions.add(new Motion("Punch", R.raw.punch, R.drawable.punch, UserAction.PUNCH, 2000));
-//        mAllMotions.add(new Motion("Tap", R.raw.tap, R.drawable.tap, UserAction.TAP, 2000));
+        mAllMotions.add(new Motion("Tap", R.raw.tap, R.drawable.tap, UserAction.TAP, 2000));
     }
 
     public Motion random() {

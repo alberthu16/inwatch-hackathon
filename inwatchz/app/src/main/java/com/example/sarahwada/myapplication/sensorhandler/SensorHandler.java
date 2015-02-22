@@ -1,16 +1,22 @@
 package com.example.sarahwada.myapplication.sensorhandler;
 
+import android.app.Activity;
 import android.content.Context;
 import android.hardware.SensorManager;
 import android.util.Log;
+
 import com.example.sarahwada.myapplication.models.MotionsContainer.UserAction;
+
 import java.util.Hashtable;
 
 /**
  * SensorHandler is responsible for handling listeners and sensors based on the user action.
  * There is an event listener for each action, which has its corresponding sensor(s).
  */
-public class SensorHandler {
+public class SensorHandler extends Activity {
+    // Save context
+    Context c;
+
     // Handles listener register and unregister
     SensorManager sensorManager;
 
@@ -19,6 +25,7 @@ public class SensorHandler {
     ActionEventListener pushEventListener;
     ActionEventListener punchEventListener;
     ActionEventListener twistEventListener;
+    ActionEventListener tapEventListener;
 
     // Maps the user action to what event listeners it requires
     Hashtable<UserAction, ActionEventListener> actionListeners = new Hashtable<>();
@@ -28,6 +35,8 @@ public class SensorHandler {
      * @param context Context app was started in, from GameActivity
      */
     public SensorHandler(Context context) {
+        this.c = context;
+
         // Create sensor manager
         this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
@@ -36,12 +45,14 @@ public class SensorHandler {
         this.pushEventListener = new PushEventListener(sensorManager, context);
         this.punchEventListener = new PunchEventListener(sensorManager, context);
         this.twistEventListener = new TwistEventListener(sensorManager, context);
+        this.tapEventListener = new TapEventListener(sensorManager, context);
 
         // Store event listeners
         this.actionListeners.put(UserAction.PULL, pullEventListener);
         this.actionListeners.put(UserAction.PUSH, pushEventListener);
         this.actionListeners.put(UserAction.TWIST, twistEventListener);
         this.actionListeners.put(UserAction.PUNCH, punchEventListener);
+        this.actionListeners.put(UserAction.TAP, tapEventListener);
 
         Log.i("SensorHandler", "Initialized all event listeners, sensors, and structures");
     }

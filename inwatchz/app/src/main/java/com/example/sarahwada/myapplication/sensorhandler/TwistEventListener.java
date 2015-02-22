@@ -47,7 +47,7 @@ public class TwistEventListener extends ActionEventListener {
             this.success = true;
             this.context.setIsMotionCorrect(true);
 
-            MediaPlayer.create(this.context, R.raw.boom).start();
+            MediaPlayer.create(this.context, R.raw.twist_effect).start();
         }
     }
 

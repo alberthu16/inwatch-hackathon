@@ -4,7 +4,9 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
-import android.widget.Toast;
+import android.media.MediaPlayer;
+
+import com.example.sarahwada.myapplication.R;
 
 /**
  *
@@ -48,9 +50,9 @@ public class PunchEventListener extends ActionEventListener {
     }
 
     private void executePunchAction(float magnitude) {
-        Toast.makeText(context, "ow: " + magnitude, Toast.LENGTH_SHORT).show();
         this.success = true;
         this.context.setIsMotionCorrect(true);
+        MediaPlayer.create(this.context, R.raw.punch_effect).start();
     }
 
     @Override

@@ -6,7 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.example.sarahwada.myapplication.R;
 
 /**
  *
@@ -54,11 +55,7 @@ public class TwistEventListener extends ActionEventListener {
             this.success = true;
             this.context.setIsMotionCorrect(true);
 
-            Toast.makeText(context, "TWIST! ", Toast.LENGTH_SHORT).show();
-
-            //TODO: play media sound
-            //MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.boom);
-            //mediaPlayer.start();
+            MediaPlayer.create(this.context, R.raw.boom).start();
         }
     }
 

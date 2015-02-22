@@ -11,26 +11,12 @@ import android.widget.Toast;
  */
 public class PullEventListener extends ActionEventListener {
 
-
-    /* Current acceleration values */
-    float xAccel;
-    float yAccel;
-    float zAccel;
-
-    /* Previous acceleration values */
-    float xPrev;
-    float yPrev;
-    float zPrev;
-
-    /* Supress first motion? */
-    boolean firstUpdate = true;
+    float mLastAccelWithGrav = 0.00f;
+    float mAccelWithGrav = SensorManager.GRAVITY_EARTH;
+    float mAccelNoGrav = SensorManager.GRAVITY_EARTH;
 
     /* Pull Threshold */
-    final float pullThreshold = 5.0f;
-    float magnitude;
-
-    /* Has a motion started */
-    boolean pullInitiated = false;
+    final float pullThreshold = 8.0f;
 
     public PullEventListener(SensorManager sensorManager, Context context) {
         super(sensorManager, context);
@@ -42,71 +28,28 @@ public class PullEventListener extends ActionEventListener {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
             float[] values = event.values;
-            float[] gravity = {0, 0, 0};
-
-            float alpha = 0.8f;
-
-            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
-
-            values[0] = event.values[0] - gravity[0];
-            values[1] = event.values[1] - gravity[1];
-            values[2] = event.values[2] - gravity[2];
-
 
             /* Detected movement */
             float x = values[0];
             float y = values[1];
-            float z = values[2];
 
-            boolean pulling = false;
-            if ( y < 0 ) {
-                pulling = true;
-            }
-            updateAccelParameters(x, y, z);
+            boolean pulling = (y < 0);
 
-            if ((!pullInitiated) && isPullOrPushed() && pulling) {
-                pullInitiated = true;
-            } else if ((pullInitiated) && isPullOrPushed() && pulling) {
-                executePullAction(magnitude);
-            } else if ((pullInitiated) && (!isPullOrPushed())) {
-                pullInitiated = false;
+            mLastAccelWithGrav = mAccelWithGrav;
+            mAccelWithGrav = android.util.FloatMath.sqrt(0.2f*x*x + 1.9f*y*y);
+            float delta = mAccelWithGrav - mLastAccelWithGrav;
+            mAccelNoGrav = mAccelNoGrav * 0.9f + delta; //low-pass filter
+
+
+            if (mAccelNoGrav > pullThreshold && pulling) {
+                executePullAction(mAccelNoGrav);
             }
         }
-    }
-
-    private boolean isPullOrPushed() {
-        float deltaY = Math.abs(yPrev - yAccel);
-        float deltaX = Math.abs(xPrev - xAccel);
-        float xWeight = 0.2f;
-
-        magnitude = (xWeight * deltaX + 1.3f * deltaY);
-
-        return (magnitude > pullThreshold);
-    }
-
-    /* Store the acceleration values given by the sensor */
-    private void updateAccelParameters(float xNewAccel, float yNewAccel,
-                                       float zNewAccel) {
-        /* we have to suppress the first change of acceleration, it results from first values being initialized with 0 */
-        if (firstUpdate) {
-            xPrev = xNewAccel;
-            yPrev = yNewAccel;
-            zPrev = zNewAccel;
-            firstUpdate = false;
-        } else {
-            xPrev = xAccel;
-            yPrev = yAccel;
-            zPrev = zAccel;
-        }
-        xAccel = xNewAccel;
-        yAccel = yNewAccel;
-        zAccel = zNewAccel;
     }
 
     private void executePullAction(float magnitude) {
         Toast.makeText(context, "Device was pulled: " + magnitude, Toast.LENGTH_SHORT).show();
+        this.success = true;
     }
 
     @Override

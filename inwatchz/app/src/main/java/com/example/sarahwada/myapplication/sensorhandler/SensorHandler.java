@@ -3,11 +3,9 @@ package com.example.sarahwada.myapplication.sensorhandler;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.Log;
 
-import com.example.sarahwada.myapplication.R;
 import com.example.sarahwada.myapplication.models.MotionsContainer.UserAction;
 
 import java.util.Hashtable;

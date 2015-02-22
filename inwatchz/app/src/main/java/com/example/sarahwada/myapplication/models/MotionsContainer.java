@@ -21,11 +21,11 @@ public class MotionsContainer {
     public MotionsContainer() {
         mAllMotions = new ArrayList();
 
-        mAllMotions.add(new Motion("Push", R.raw.boom, R.drawable.push, UserAction.PUSH, 10000));
-        mAllMotions.add(new Motion("Pull", R.raw.boom, R.drawable.pull, UserAction.PULL, 10000));
-        mAllMotions.add(new Motion("Twist", R.raw.boom, R.drawable.twist, UserAction.TWIST, 10000));
-        mAllMotions.add(new Motion("Punch", R.raw.boom, R.drawable.punch, UserAction.PUNCH, 10000));
-//        mAllMotions.add(new Motion("Tap", R.raw.boom, R.drawable.tap, UserAction.TAP, 2000));
+        mAllMotions.add(new Motion("Push", R.raw.push, R.drawable.push, UserAction.PUSH, 10000));
+        mAllMotions.add(new Motion("Pull", R.raw.pull, R.drawable.pull, UserAction.PULL, 10000));
+        mAllMotions.add(new Motion("Twist", R.raw.twist, R.drawable.twist, UserAction.TWIST, 10000));
+        mAllMotions.add(new Motion("Punch", R.raw.punch, R.drawable.punch, UserAction.PUNCH, 10000));
+//        mAllMotions.add(new Motion("Tap", R.raw.tap, R.drawable.tap, UserAction.TAP, 2000));
     }
 
     public Motion random() {

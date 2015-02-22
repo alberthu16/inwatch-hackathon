@@ -6,16 +6,19 @@ package com.example.sarahwada.myapplication.models;
 public class Motion {
     private String mCommand;
     private int mSound;
+    private int mImage;
     private MotionsContainer.UserAction mUserAction;
     // duration ms
     private long mDuration;
 
     public Motion(String command,
                   int sound,
+                  int image,
                   MotionsContainer.UserAction userAction,
                   long duration) {
         mCommand= command;
         mSound = sound;
+        mImage = image;
         mUserAction = userAction;
         mDuration = duration;
     }
@@ -35,6 +38,10 @@ public class Motion {
     public int getSound() {
         return mSound;
     }
+
+    public void setImage(int image) { mImage = image; }
+
+    public int getImage() { return mImage; }
 
     public void setUserAction(MotionsContainer.UserAction userAction) {
         mUserAction = userAction;

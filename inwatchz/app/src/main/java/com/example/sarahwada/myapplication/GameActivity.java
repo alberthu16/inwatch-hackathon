@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sarahwada.myapplication.models.Motion;
@@ -65,6 +66,8 @@ public class GameActivity extends Activity {
     private void updateView(Motion m) {
         TextView details = (TextView) findViewById(R.id.details);
         details.setText(m.getText());
+        ImageView image = (ImageView) findViewById(R.id.image);
+        image.setImageResource(m.getImage());
         MediaPlayer.create(this, m.getSound()).start();
     }
 

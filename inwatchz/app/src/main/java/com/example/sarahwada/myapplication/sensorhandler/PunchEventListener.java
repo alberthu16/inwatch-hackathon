@@ -25,7 +25,7 @@ public class PunchEventListener extends ActionEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        if ((event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) && !this.success) {
 
             float[] values = event.values;
 
@@ -50,6 +50,7 @@ public class PunchEventListener extends ActionEventListener {
     private void executePunchAction(float magnitude) {
         Toast.makeText(context, "ow: " + magnitude, Toast.LENGTH_SHORT).show();
         this.success = true;
+        this.context.setIsMotionCorrect(true);
     }
 
     @Override

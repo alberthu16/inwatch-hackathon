@@ -1,11 +1,17 @@
 package com.example.sarahwada.myapplication.sensorhandler;
 
+import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.sarahwada.myapplication.R;
 import com.example.sarahwada.myapplication.models.MotionsContainer.UserAction;
 
 import java.util.Hashtable;
@@ -13,7 +19,10 @@ import java.util.Hashtable;
 /**
  * SensorHandler is responsible for handling listeners and sensors based on the user action.
  */
-public class SensorHandler {
+public class SensorHandler extends Activity {
+    // Save context
+    Context c;
+
     // Handles listener register and unregister
     SensorManager sensorManager;
 
@@ -31,6 +40,8 @@ public class SensorHandler {
      * @param context Context app was started in (from MainActivity)
      */
     public SensorHandler(Context context) {
+        this.c = context;
+
         // Create sensor manager
         this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
@@ -64,6 +75,20 @@ public class SensorHandler {
      * @return
      */
     public boolean handle(UserAction action, long timeout) {
+
+        // Taps are separate from sensor listeners
+        ImageView mImageView = (ImageView) findViewById(R.id.image);
+        if (action == UserAction.TAP) {
+            mImageView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    //show dialog here
+                    Toast.makeText(c, "TAP DAT", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+        }
+
         // Get event listener associated with this command
         final ActionEventListener listener = actionListeners.get(action);
         listener.startListener();

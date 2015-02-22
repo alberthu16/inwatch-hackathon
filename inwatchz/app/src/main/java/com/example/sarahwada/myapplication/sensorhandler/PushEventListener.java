@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.widget.ImageView;
 
 import com.example.sarahwada.myapplication.R;
 
@@ -52,6 +53,8 @@ public class PushEventListener extends ActionEventListener {
     private void executePushAction(float magnitude) {
         this.success = true;
         this.context.setIsMotionCorrect(true);
+        ImageView image = (ImageView) this.context.findViewById(R.id.image);
+        image.setImageResource(R.drawable.push_complete);
         MediaPlayer.create(this.context, R.raw.push_effect).start();
     }
 

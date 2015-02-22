@@ -5,6 +5,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.widget.ImageView;
+
 import com.example.sarahwada.myapplication.R;
 
 /**
@@ -47,6 +49,9 @@ public class TwistEventListener extends ActionEventListener {
             this.success = true;
             this.context.setIsMotionCorrect(true);
 
+            MediaPlayer.create(this.context, R.raw.twist_effect).start();
+            ImageView image = (ImageView) this.context.findViewById(R.id.image);
+            image.setImageResource(R.drawable.twist_complete);
             MediaPlayer.create(this.context, R.raw.twist_effect).start();
         }
     }

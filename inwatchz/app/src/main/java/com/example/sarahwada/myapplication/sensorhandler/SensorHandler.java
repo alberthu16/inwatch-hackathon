@@ -8,6 +8,7 @@ import java.util.Hashtable;
 
 /**
  * SensorHandler is responsible for handling listeners and sensors based on the user action.
+ * There is an event listener for each action, which has its corresponding sensor(s).
  */
 public class SensorHandler {
     // Handles listener register and unregister
@@ -24,7 +25,7 @@ public class SensorHandler {
 
     /**
      * Constructor for the SensorHandler
-     * @param context Context app was started in (from MainActivity)
+     * @param context Context app was started in, from GameActivity
      */
     public SensorHandler(Context context) {
         // Create sensor manager

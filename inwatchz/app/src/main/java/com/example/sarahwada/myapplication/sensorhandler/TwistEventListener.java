@@ -8,7 +8,7 @@ import android.media.MediaPlayer;
 import com.example.sarahwada.myapplication.R;
 
 /**
- *
+ * Event listener for the twist event.
  */
 public class TwistEventListener extends ActionEventListener {
     private boolean initialized = false;

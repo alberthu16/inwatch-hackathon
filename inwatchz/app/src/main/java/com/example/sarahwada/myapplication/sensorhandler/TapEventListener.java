@@ -4,7 +4,11 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.sarahwada.myapplication.R;
 
 /**
  *
@@ -52,6 +56,9 @@ public class TapEventListener extends ActionEventListener {
         Toast.makeText(context, "bloop: " + magnitude, Toast.LENGTH_SHORT).show();
         this.success = true;
         this.context.setIsMotionCorrect(true);
+        ImageView image = (ImageView) this.context.findViewById(R.id.image);
+        image.setImageResource(R.drawable.tap_complete);
+        MediaPlayer.create(this.context, R.raw.tap_effect).start();
     }
 
     @Override
